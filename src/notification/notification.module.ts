@@ -11,6 +11,7 @@ import { TypeOrmRepository } from './infra/persistance/typeorm/repository/type-o
 import { SendEmailNotificationUseCase } from './application/use-cases/send-notification.use-case';
 import { MemcacheAdapter } from './infra/cache/mem-cache/mem-cache.adapter';
 import { SmsIrAdapter } from './infra/sms/adapter/sms-ir.adapter';
+import { InMemoryUserRepository } from '../user/infrastructure/persistence/repositories/in-memory-user.repository';
 
 @Module({
   providers: [
@@ -19,6 +20,10 @@ import { SmsIrAdapter } from './infra/sms/adapter/sms-ir.adapter';
       provide: SmsProvider,
       // Or SmsIrAdapter
       useClass: SmsIrAdapter,
+    },
+    {
+      provide: 'UserRepository',
+      useClass: InMemoryUserRepository,
     },
     {
       provide: EmailProvider,

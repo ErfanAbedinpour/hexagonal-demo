@@ -1,6 +1,6 @@
 // src/user/api/controllers/user.controller.ts
 import { Controller, Post, Body } from '@nestjs/common';
-import { CreateUserUseCase } from '../../application/use-cases/create-user.use-case';
+import { CreateUserUseCase } from '../../../application/use-cases/create-user.use-case';
 
 @Controller('users')
 export class UserController {
