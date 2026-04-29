@@ -15,6 +15,7 @@ export class InMemoryUserRepository implements UserRepository {
   }
 
   async findByEmail(email: string): Promise<User | null> {
+    console.log({ user: this.users.values() });
     for (const user of this.users.values()) {
       if (user.email === email) return UserMapper.toDomain(user);
     }

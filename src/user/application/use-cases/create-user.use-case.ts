@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from '../../domain/repositories/user-repository.interface';
 import { User } from '../../domain/entities/user.entity';
 import { UserId } from '../../domain/value-objects/user-id.vo';
+import { ApplicationError } from '../../../common/filters/application-error.filter';
 
 @Injectable()
 export class CreateUserUseCase {
@@ -11,10 +12,10 @@ export class CreateUserUseCase {
   ) {}
 
   async execute(email: string, name: string): Promise<any> {
-    const IsUserExists = !!this.userRepository.findByEmail(email);
+    const IsUserExists = !!(await this.userRepository.findByEmail(email));
 
     if (IsUserExists) {
-      throw new Error('User already exists');
+      throw new ApplicationError('User already exists');
     }
 
     const user = User.create(UserId.generate(), email, name);

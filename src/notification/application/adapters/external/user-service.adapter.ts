@@ -12,9 +12,6 @@ export class UserServiceAdapter implements UserServicePort {
   ) {}
 
   async getUserByEmail(email: string): Promise<User | null> {
-    return (
-      (await this.userRepository.findAll()).find((u) => u.email === email) ||
-      null
-    );
+    return this.userRepository.findByEmail(email);
   }
 }

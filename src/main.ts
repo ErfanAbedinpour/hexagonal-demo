@@ -3,8 +3,13 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { SwaggerTheme, SwaggerThemeNameEnum } from 'swagger-themes';
 
+import { ApplicationErrorFilter } from './common/filters/application-error.filter';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Register global filter for ApplicationError
+  app.useGlobalFilters(new ApplicationErrorFilter());
 
   // Swagger Configuration
   const config = new DocumentBuilder()

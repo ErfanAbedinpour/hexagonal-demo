@@ -1,8 +1,10 @@
+import { ApplicationError } from '../../../common/filters/application-error.filter';
+
 // src/user/domain/value-objects/user-id.vo.ts
 export class UserId {
   private constructor(private readonly _value: string) {
     if (!this._value || this._value.length < 3) {
-      throw new Error('Invalid user id');
+      throw new ApplicationError('Invalid user id');
     }
   }
   static create(value: string): UserId {
