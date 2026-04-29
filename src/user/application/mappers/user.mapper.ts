@@ -8,13 +8,13 @@ import { UserId } from '../../domain/value-objects/user-id.vo';
 export class UserMapper {
   // this is for testing purposes
   static toDomain(user: UserOrmEntity): User {
-    return User.create(UserId.create(user.id), user.email, user.name);
+    return User.create(UserId.create(user.id), user.identifier, user.name);
   }
   // this is for testing purposes
   static toEntity(user: User): UserOrmEntity {
     return {
       id: user.id.value,
-      email: user.email,
+      identifier: user.identifier,
       name: user.name,
     };
   }

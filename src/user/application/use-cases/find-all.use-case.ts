@@ -10,6 +10,10 @@ export class FindAllUsersUseCase {
 
   async execute(): Promise<any> {
     const users = await this.userRepository.findAll();
-    return users;
+    return users.map((u) => ({
+      identifier: u.identifier,
+      id: u.id,
+      name: u.name,
+    }));
   }
 }

@@ -11,15 +11,20 @@ export class CreateUserUseCase {
     @Inject('UserRepository') private readonly userRepository: UserRepository,
   ) {}
 
-  async execute(email: string, name: string): Promise<any> {
-    const IsUserExists = !!(await this.userRepository.findByEmail(email));
+  async execute(identifier: string, name: string): Promise<any> {
+    const isUserExists =
+      !!(await this.userRepository.findByIdentifier(identifier));
 
-    if (IsUserExists) {
+    if (isUserExists) {
       throw new ApplicationError('User already exists');
     }
 
-    const user = User.create(UserId.generate(), email, name);
+    const user = User.create(UserId.generate(), identifier, name);
     await this.userRepository.save(user);
-    return user;
+    return {
+      id: user.id.value,
+      identifier: user.identifier,
+      name: user.name,
+    };
   }
 }

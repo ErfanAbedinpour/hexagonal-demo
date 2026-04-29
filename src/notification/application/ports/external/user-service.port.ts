@@ -4,5 +4,5 @@ import { User } from '../../../../user/domain/entities/user.entity';
 export const UserService = Symbol('UserService');
 
 export interface UserServicePort {
-  getUserByEmail(email: string): Promise<User | null>;
+  getUserByIdentifier(identifier: string): Promise<User | null>;
 }

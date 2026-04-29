@@ -15,6 +15,7 @@ import { UserService } from './application/ports/external/user-service.port';
 import { UserServiceAdapter } from './application/adapters/external/user-service.adapter';
 import { MeliPayamakAdapter } from './infrastructure/sms/adapter/melipayamak.adapter';
 import { RedisAdapter } from './infrastructure/cache/redis/redis.adapter';
+import { PrismaRepository } from './infrastructure/persistance/prisma/repository/prisma.repository';
 
 @Module({
   providers: [
@@ -23,7 +24,7 @@ import { RedisAdapter } from './infrastructure/cache/redis/redis.adapter';
     {
       provide: SmsProvider,
       // Or (MeliPayamak , SmsIr)
-      useClass: SmsIrAdapter,
+      useClass: MeliPayamakAdapter,
     },
     // {
     //   provide: 'UserRepository',
@@ -37,12 +38,12 @@ import { RedisAdapter } from './infrastructure/cache/redis/redis.adapter';
     {
       provide: Cache,
       // Or memcache Adapter
-      useClass: RedisAdapter,
+      useClass: MemcacheAdapter,
     },
     {
       provide: NotificationRepository,
       // Or PrismaRepository
-      useClass: TypeOrmRepository,
+      useClass: PrismaRepository,
     },
     {
       provide: UserService,

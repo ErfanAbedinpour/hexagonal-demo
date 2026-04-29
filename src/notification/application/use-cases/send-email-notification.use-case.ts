@@ -29,7 +29,7 @@ export class SendEmailNotificationUseCase {
   ) {}
 
   async Execute(destination: string, message: string) {
-    const user = await this.userService.getUserByEmail(destination);
+    const user = await this.userService.getUserByIdentifier(destination);
     console.log(user);
     if (!user) {
       return new ApplicationError('User Not Found');

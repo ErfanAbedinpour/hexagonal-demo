@@ -5,6 +5,6 @@ export class UserCreatedEvent {
   public readonly eventName = 'user.created';
   constructor(
     public readonly userId: UserId,
-    public readonly email: string,
+    public readonly identifier: string,
   ) {}
 }

@@ -11,7 +11,7 @@ export class UserServiceAdapter implements UserServicePort {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async getUserByEmail(email: string): Promise<User | null> {
-    return this.userRepository.findByEmail(email);
+  async getUserByIdentifier(identifier: string): Promise<User | null> {
+    return this.userRepository.findByIdentifier(identifier);
   }
 }

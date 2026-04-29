@@ -29,13 +29,13 @@ export class SendSmsNotificationUseCase {
   ) {}
 
   async Execute(destination: string, message: string) {
-    const user = await this.userService.getUserByEmail(destination);
+    const user = await this.userService.getUserByIdentifier(destination);
     if (!user) {
       return new ApplicationError('User Not Found');
     }
 
     const data = {
-      email: destination,
+      identifier: destination,
       message,
       provider: this.emailProvider.providerName,
       sentAt: new Date(),
@@ -46,10 +46,10 @@ export class SendSmsNotificationUseCase {
     // using repository to save notification record
     await this.notificationRepository.save(
       new Notification(
-        data.email,
+        data.identifier,
         String(user.id),
         NotificationType.EMAIL,
-        data.email,
+        data.identifier,
         data.message,
         NotificationStatus.SENT,
         data.sentAt,

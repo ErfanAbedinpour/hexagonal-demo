@@ -9,8 +9,8 @@ export class DeleteUserUseCase {
   ) {}
 
   async execute(id: string): Promise<any> {
-    const user = await this.userRepository.delete(id);
+    await this.userRepository.delete(id);
 
-    return user;
+    return;
   }
 }

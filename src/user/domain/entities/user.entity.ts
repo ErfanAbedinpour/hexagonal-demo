@@ -5,33 +5,13 @@ import { UserCreatedEvent } from '../events/user-created.event';
 
 export class User {
   private constructor(
-    private readonly _id: UserId,
-    private _email: string,
-    private _name: string,
+    public readonly id: UserId,
+    public identifier: string,
+    public name: string,
   ) {}
 
-  static create(id: UserId, email: string, name: string): User {
-    const user = new User(id, email, name);
+  static create(id: UserId, identifier: string, name: string): User {
+    const user = new User(id, identifier, name);
     return user;
-  }
-
-  get id(): UserId {
-    return this._id;
-  }
-
-  get email(): string {
-    return this._email;
-  }
-
-  set email(email: string) {
-    this._email = email;
-  }
-
-  get name(): string {
-    return this._name;
-  }
-
-  set name(name: string) {
-    this._name = name;
   }
 }

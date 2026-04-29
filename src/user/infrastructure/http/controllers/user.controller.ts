@@ -19,7 +19,7 @@ export class UserController {
   @Post()
   @ApiBody({ type: CreateUserDto })
   async create(@Body() body: CreateUserDto) {
-    return this.createUserUseCase.execute(body.email, body.name);
+    return this.createUserUseCase.execute(body.identifier, body.name);
   }
 
   @ApiParam({ name: 'id', type: 'string' })

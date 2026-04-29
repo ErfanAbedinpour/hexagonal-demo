@@ -16,6 +16,10 @@ export class FindUserByIdUseCase {
       throw new ApplicationError('User not found');
     }
 
-    return user;
+    return {
+      id: user.id.value,
+      name: user.name,
+      identifier: user.identifier,
+    };
   }
 }
