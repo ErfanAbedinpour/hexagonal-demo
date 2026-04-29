@@ -14,4 +14,8 @@ export class User {
     const user = new User(id, identifier, name);
     return user;
   }
+
+  isIdentifierValid() {
+    return this.identifier.length >= 5;
+  }
 }

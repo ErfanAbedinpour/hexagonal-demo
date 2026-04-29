@@ -20,6 +20,13 @@ export class CreateUserUseCase {
     }
 
     const user = User.create(UserId.generate(), identifier, name);
+
+    if (!user.isIdentifierValid()) {
+      throw new ApplicationError(
+        'identifier should be greater than 5 characters.',
+      );
+    }
+
     await this.userRepository.save(user);
     return {
       id: user.id.value,
