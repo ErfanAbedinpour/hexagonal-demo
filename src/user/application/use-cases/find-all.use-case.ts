@@ -12,7 +12,7 @@ export class FindAllUsersUseCase {
     const users = await this.userRepository.findAll();
     return users.map((u) => ({
       identifier: u.identifier,
-      id: u.id,
+      id: u.id.value,
       name: u.name,
     }));
   }
