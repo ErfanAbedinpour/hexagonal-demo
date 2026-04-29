@@ -10,9 +10,10 @@
 2. [Application Layer Components](#application-layer-components)
 3. [Infrastructure Layer Components](#infrastructure-layer-components)
 4. [API Layer Components](#api-layer-components)
-5. [Cross-Cutting Components](#cross-cutting-components)
-6. [Flow of Dependencies](#flow-of-dependencies)
-7. [Common Anti-Patterns to Avoid](#common-anti-patterns-to-avoid)
+5. [Deployment Directory](#deployment-directory)
+6. [Cross-Cutting Components](#cross-cutting-components)
+7. [Flow of Dependencies](#flow-of-dependencies)
+8. [Common Anti-Patterns to Avoid](#common-anti-patterns-to-avoid)
 
 ---
 
@@ -1228,5 +1229,90 @@ export class OrderController {
   async createOrder(
     @Body() createOrderDto: CreateOrderDto,
     @GetUser() user: User,
-  ): Promise<Order
+  ): Promise<Order> {
+    const order = await this.createOrderUseCase.execute(createOrderDto);
+    return order;
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get order details' })
+  @ApiResponse({ status: 200, type: OrderResponseDto })
+  async getOrder(
+    @Param('id') id: string,
+    @GetUser() user: User,
+  ): Promise<Order> {
+    const order = await this.getOrderQuery.execute(id);
+    return order;
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Cancel order' })
+  @ApiResponse({ status: 200, type: void })
+  async cancelOrder(
+    @Param('id') id: string,
+    @GetUser() user: User,
+  ): Promise<void> {
+    await this.cancelOrderUseCase.execute(id);
+    return;
+  }
+}
 ```
+
+---
+
+## Deployment Directory
+
+The **deployment** directory contains all resources, configuration files, and scripts required to deploy the application across different environments (development, staging, production). This directory is essential for ensuring consistent, repeatable deployments and for separating deployment concerns from application logic.
+
+### Structure
+
+```
+deployment/
+  Dockerfile                # Base Docker image for the application
+  dev/
+    docker-compose.yml      # Compose file for local development
+    README.md               # Environment-specific notes
+  prod/
+    docker-compose.yml      # Compose file for production deployment
+    README.md
+  staging/
+    docker-compose.yml      # Compose file for staging environment
+    README.md
+```
+
+### Purpose
+
+- **Dockerfile**: Defines the container image for the application, ensuring consistent runtime environments.
+- **docker-compose.yml**: Provides multi-container orchestration for each environment (dev, staging, prod), including service dependencies (e.g., database, cache, message broker).
+- **README.md**: Documents environment-specific deployment instructions, variables, and caveats.
+
+### Best Practices
+
+- Keep deployment scripts and configuration versioned alongside the codebase.
+- Use environment-specific subfolders to avoid accidental production deployments with development settings.
+- Document any manual steps or environment variables required for each environment in the corresponding README.md.
+- Prefer infrastructure-as-code (e.g., Docker Compose, Kubernetes manifests) for reproducibility.
+
+### Example Usage
+
+To start the application locally for development:
+
+```sh
+docker compose -f deployment/dev/docker-compose.yml up --build
+```
+
+For production deployment:
+
+```sh
+docker compose -f deployment/prod/docker-compose.yml up -d
+```
+
+For staging:
+
+```sh
+docker compose -f deployment/staging/docker-compose.yml up -d
+```
+
+> **Note:** Always review and update the deployment documentation when adding new dependencies or services.
+
+---
