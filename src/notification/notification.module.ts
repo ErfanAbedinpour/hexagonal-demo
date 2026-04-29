@@ -5,17 +5,14 @@ import { SmsProvider } from './application/ports/providers/sms-provider.port';
 import { EmailProvider } from './application/ports/providers/email-provider.port';
 import { NodemailerAdapter } from './infrastructure/email/nodemailer/nodemailer.adapter';
 import { Cache } from './application/ports/cross-cutting/cache.port';
-import { TypeOrmRepository } from './infrastructure/persistance/typeorm/repository/type-orm.repository';
 import { SendEmailNotificationUseCase } from './application/use-cases/send-email-notification.use-case';
 import { MemcacheAdapter } from './infrastructure/cache/mem-cache/mem-cache.adapter';
 import { SmsIrAdapter } from './infrastructure/sms/adapter/sms-ir.adapter';
-import { InMemoryUserRepository } from '../user/infrastructure/persistence/repositories/in-memory-user.repository';
 import { SendSmsNotificationUseCase } from './application/use-cases/send-sms-notification.use-case';
 import { UserService } from './application/ports/external/user-service.port';
 import { UserServiceAdapter } from './application/adapters/external/user-service.adapter';
-import { MeliPayamakAdapter } from './infrastructure/sms/adapter/melipayamak.adapter';
-import { RedisAdapter } from './infrastructure/cache/redis/redis.adapter';
 import { PrismaRepository } from './infrastructure/persistance/prisma/repository/prisma.repository';
+import { LiaraSmtpServiceAdapter } from './infrastructure/email/liara/liara-smtp.adapter';
 
 @Module({
   providers: [
@@ -24,7 +21,7 @@ import { PrismaRepository } from './infrastructure/persistance/prisma/repository
     {
       provide: SmsProvider,
       // Or (MeliPayamak , SmsIr)
-      useClass: MeliPayamakAdapter,
+      useClass: SmsIrAdapter,
     },
     // {
     //   provide: 'UserRepository',
@@ -32,8 +29,8 @@ import { PrismaRepository } from './infrastructure/persistance/prisma/repository
     // },
     {
       provide: EmailProvider,
-      // Or Another adapter
-      useClass: NodemailerAdapter,
+      // Or Another Liara
+      useClass: LiaraSmtpServiceAdapter,
     },
     {
       provide: Cache,

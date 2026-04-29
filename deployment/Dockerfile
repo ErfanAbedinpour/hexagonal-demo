@@ -3,29 +3,38 @@
 # --- Base image ---
 FROM node:20-alpine AS base
 WORKDIR /app
-COPY package*.json ./
+
+# Install pnpm
+RUN npm install -g pnpm
+
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
 
 # --- Development dependencies ---
 FROM base AS dev
 ENV NODE_ENV=development
-RUN npm install
+RUN pnpm install
 COPY . .
-CMD ["npm", "run", "start:dev"]
+CMD ["pnpm", "run", "start:dev"]
 
 # --- Build stage ---
 FROM base AS build
 ENV NODE_ENV=production
-RUN npm ci --omit=dev
+RUN pnpm install --prod --frozen-lockfile
 COPY . .
-RUN npm run build
+RUN pnpm run build
 
 # --- Production image ---
 FROM node:20-alpine AS prod
 WORKDIR /app
+
+# Install pnpm for production scripts if needed
+RUN npm install -g pnpm
+
 ENV NODE_ENV=production
 COPY --from=build /app/dist ./dist
-COPY package*.json ./
-RUN npm ci --omit=dev --ignore-scripts
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 COPY ./deployment/prod/.env .env
 CMD ["node", "dist/main.js"]
 
