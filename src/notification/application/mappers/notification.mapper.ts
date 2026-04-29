@@ -1,5 +1,5 @@
 import { Notification } from '../../domain/entities/notification.entity';
-import { NotificationEntity } from '../../infra/persistance/typeorm/entity/notificatin.entity';
+import { NotificationEntity } from '../../infrastructure/persistance/typeorm/entity/notificatin.entity';
 
 export class NotificationMapper {
   static toDomain(notif: NotificationEntity): Notification {

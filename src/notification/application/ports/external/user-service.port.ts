@@ -1,7 +1,8 @@
 // src/notification/application/ports/user-service.port.ts
 import { User } from '../../../../user/domain/entities/user.entity';
 
+export const UserService = Symbol('UserService');
+
 export interface UserServicePort {
-  getUserById(id: string): Promise<User | null>;
-  findAllUsers(): Promise<User[]>;
+  getUserByEmail(email: string): Promise<User | null>;
 }

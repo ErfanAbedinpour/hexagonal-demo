@@ -4,4 +4,6 @@ export interface ISmsProvider {
     destination: string,
     message: string,
   ): Promise<{ success: boolean; provider: string; error?: string }>;
+
+  get providerName(): string;
 }

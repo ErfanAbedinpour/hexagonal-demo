@@ -11,11 +11,10 @@ export class UserServiceAdapter implements UserServicePort {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async getUserById(id: string): Promise<User | null> {
-    return this.userRepository.findById(id);
-  }
-
-  async findAllUsers(): Promise<User[]> {
-    return this.userRepository.findAll();
+  async getUserByEmail(email: string): Promise<User | null> {
+    return (
+      (await this.userRepository.findAll()).find((u) => u.email === email) ||
+      null
+    );
   }
 }

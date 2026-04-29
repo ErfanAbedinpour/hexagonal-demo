@@ -14,4 +14,8 @@ export class MeliPayamakAdapter implements ISmsProvider {
       }, 1000);
     });
   }
+
+  get providerName(): string {
+    return 'MeliPayamak';
+  }
 }

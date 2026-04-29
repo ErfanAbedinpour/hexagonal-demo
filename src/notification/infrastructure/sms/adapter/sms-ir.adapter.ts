@@ -14,4 +14,8 @@ export class SmsIrAdapter implements ISmsProvider {
       }, 1000);
     });
   }
+
+  get providerName(): string {
+    return 'SmsIr';
+  }
 }
